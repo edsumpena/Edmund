@@ -61,11 +61,12 @@ public class FtcOpModeRegister implements OpModeRegister {
     manager.register("K9TeleOp", K9TeleOp.class);
     manager.register("K9Line", K9Line.class);
     manager.register ("PushBotAuto", PushBotAuto.class);
-    manager.register ("PushBotManual", PushBotManual.class);
+    //manager.register ("PushBotManual", PushBotManual.class);
     manager.register ("DriveInSquare", DriveInSquare.class);
     manager.register ("Aton", Aton.class);
     manager.register ("Autonomous", Autonomous.class);
-    manager.register("MVMSTeleOpMode", MVMSTeleOpTankMode.class);
+    //manager.register("MVMSTeleOpMode", MVTeleOpMode.class);
+    manager.register("MVMSTeleOpModeV2", MVMSTeleOpTankMode.class);
 
     /*
      * Uncomment any of the following lines if you want to register an op mode.
