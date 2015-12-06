@@ -28,8 +28,8 @@ public class MVMSTeleOpTankMode extends OpMode {
         //Makeing all motors on the robot recognizable
         leftback_motor = hardwareMap.dcMotor.get("leftback_motor");
         rightback_motor = hardwareMap.dcMotor.get("rightback_motor");
-        leftback_motor = hardwareMap.dcMotor.get("leftfront_motor");
-        rightback_motor = hardwareMap.dcMotor.get("rightfront_motor")
+        leftfront_motor = hardwareMap.dcMotor.get("leftfront_motor");
+        rightfront_motor = hardwareMap.dcMotor.get("rightfront_motor");
         //left_arm = hardwareMap.dcMotor.get("left_arm ");
         //left_hand = hardwareMap.servo.get("left_hand");
         //right_hand = hardwareMap.servo.get("right_hand");
