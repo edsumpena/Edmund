@@ -72,21 +72,32 @@ public class MVTeleOpTelemetry extends MVTeleOpHardware {
     public void update_telemetry ()
 
     {
-        if (a_warning_generated ())
-        {
-            set_first_message (a_warning_message ());
+        if (a_warning_generated()) {
+            set_first_message(a_warning_message());
         }
         //
         // Send telemetry data to the driver station.
         //
         telemetry.addData
-                ( "01"
-                        , "Left Drive: "
+                ("01"
+                        , "leftback_motor: "
                                 + a_left_drive_power()
                 );
         telemetry.addData
-                ( "02"
-                        , "Right Drive: "
+                ("02"
+                        , "rightback_motor: "
+                                + a_right_drive_power()
+                );
+
+
+        telemetry.addData
+                ("01"
+                        , "leftfront_motor: "
+                                + a_left_drive_power()
+                );
+        telemetry.addData
+                ("02"
+                        , "rightfront_motor: "
                                 + a_right_drive_power()
                 );
 

@@ -107,7 +107,7 @@ public class PushBotHardware extends OpMode
         //
         // Connect the arm motor.
         //
-        try
+        /**try
         {
             v_motor_left_arm = hardwareMap.dcMotor.get ("left_arm");
         }

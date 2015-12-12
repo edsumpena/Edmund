@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.util.Range;
 /**
  * Created by Rosa on 11/29/2015.
  */
-public class MVMSTeleOpTankMode extends OpMode {
+public class MVMSTeleOpTankMode extends MVTeleOpTelemetry {
     //motor variables
     /*final double LEFT_OPEN_POSITION = 0.0;
     final double LEFT_CLOSED_POSITION = 0.5;
@@ -28,18 +28,24 @@ public class MVMSTeleOpTankMode extends OpMode {
         //Makeing all motors on the robot recognizable
         leftback_motor = hardwareMap.dcMotor.get("leftback_motor");
         rightback_motor = hardwareMap.dcMotor.get("rightback_motor");
-        leftback_motor = hardwareMap.dcMotor.get("leftfront_motor");
-        rightback_motor = hardwareMap.dcMotor.get("rightfront_motor")
+        leftfront_motor = hardwareMap.dcMotor.get("leftfront_motor");
+        rightfront_motor = hardwareMap.dcMotor.get("rightfront_motor");
+
+
         //left_arm = hardwareMap.dcMotor.get("left_arm ");
         //left_hand = hardwareMap.servo.get("left_hand");
         //right_hand = hardwareMap.servo.get("right_hand");
     }
-
+    
     @Override
     public void loop() {
         //setting the power on the two DcMotors in a leaner function
         float rightY = gamepad1.right_stick_y;
+        telemetry.addData("RightY", rightY);
+        //float rightY = 1;
         float leftY = -gamepad1.left_stick_y;
+        telemetry.addData("LeftY", leftY);
+        //float leftY = 1;
         leftY = Range.clip(leftY, -1,1);
         rightY = Range.clip(rightY, -1, 1);
         leftY = (float)scaleInput(leftY);

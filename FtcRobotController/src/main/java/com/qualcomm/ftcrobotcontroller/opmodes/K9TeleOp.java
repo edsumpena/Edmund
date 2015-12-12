@@ -55,21 +55,21 @@ public class K9TeleOp extends OpMode {
 	final static double CLAW_MAX_RANGE  = 0.7;
 
 	// position of the arm servo.
-	double armPosition;
+	//double armPosition;
 
 	// amount to change the arm servo position.
-	double armDelta = 0.1;
+	//double armDelta = 0.1;
 
 	// position of the claw servo
-	double clawPosition;
+	//double clawPosition;
 
 	// amount to change the claw servo position by
-	double clawDelta = 0.1;
+	//double clawDelta = 0.1;
 
 	DcMotor motorRight;
 	DcMotor motorLeft;
-	Servo claw;
-	Servo arm;
+	//Servo claw;
+	//Servo arm;
 
 	/**
 	 * Constructor
@@ -107,12 +107,12 @@ public class K9TeleOp extends OpMode {
 		motorLeft = hardwareMap.dcMotor.get("motor_1");
 		motorLeft.setDirection(DcMotor.Direction.REVERSE);
 		
-		arm = hardwareMap.servo.get("servo_1");
-		claw = hardwareMap.servo.get("servo_6");
+		//arm = hardwareMap.servo.get("servo_1");
+		//claw = hardwareMap.servo.get("servo_6");
 
 		// assign the starting position of the wrist and claw
-		armPosition = 0.2;
-		clawPosition = 0.2;
+		//armPosition = 0.2;
+		//clawPosition = 0.2;
 	}
 
 	/*
@@ -138,6 +138,7 @@ public class K9TeleOp extends OpMode {
 		float direction = gamepad1.left_stick_x;
 		float right = throttle - direction;
 		float left = throttle + direction;
+		telemetry.addData("Throtle", throttle);
 
 		// clip the right/left values so that the values never exceed +/- 1
 		right = Range.clip(right, -1, 1);
@@ -153,7 +154,7 @@ public class K9TeleOp extends OpMode {
 		motorLeft.setPower(left);
 
 		// update the position of the arm.
-		if (gamepad1.a) {
+		/**if (gamepad1.a) {
 			// if the A button is pushed on gamepad1, increment the position of
 			// the arm servo.
 			armPosition += armDelta;
@@ -191,8 +192,8 @@ public class K9TeleOp extends OpMode {
 		 * are currently write only.
 		 */
         telemetry.addData("Text", "*** Robot Data***");
-        telemetry.addData("arm", "arm:  " + String.format("%.2f", armPosition));
-        telemetry.addData("claw", "claw:  " + String.format("%.2f", clawPosition));
+        //telemetry.addData("arm", "arm:  " + String.format("%.2f", armPosition));
+        //telemetry.addData("claw", "claw:  " + String.format("%.2f", clawPosition));
         telemetry.addData("left tgt pwr",  "left  pwr: " + String.format("%.2f", left));
         telemetry.addData("right tgt pwr", "right pwr: " + String.format("%.2f", right));
 
