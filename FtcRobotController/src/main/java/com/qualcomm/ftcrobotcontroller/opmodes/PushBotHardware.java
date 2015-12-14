@@ -79,30 +79,25 @@ public class PushBotHardware extends OpMode
         // The direction of the right motor is reversed, so joystick inputs can
         // be more generically applied.
         //
-        try
-        {
-            v_motor_left_drive = hardwareMap.dcMotor.get ("left_drive");
-        }
-        catch (Exception p_exeception)
-        {
-            m_warning_message ("left_drive");
-            DbgLog.msg (p_exeception.getLocalizedMessage ());
+        try {
+            v_motor_left_drive = hardwareMap.dcMotor.get("left_drive");
+        } catch (Exception p_exeception) {
+            m_warning_message("left_drive");
+            DbgLog.msg(p_exeception.getLocalizedMessage());
 
             v_motor_left_drive = null;
         }
 
-        try
-        {
-            v_motor_right_drive = hardwareMap.dcMotor.get ("right_drive");
-            v_motor_right_drive.setDirection (DcMotor.Direction.REVERSE);
-        }
-        catch (Exception p_exeception)
-        {
-            m_warning_message ("right_drive");
-            DbgLog.msg (p_exeception.getLocalizedMessage ());
+        try {
+            v_motor_right_drive = hardwareMap.dcMotor.get("right_drive");
+            v_motor_right_drive.setDirection(DcMotor.Direction.REVERSE);
+        } catch (Exception p_exeception) {
+            m_warning_message("right_drive");
+            DbgLog.msg(p_exeception.getLocalizedMessage());
 
             v_motor_right_drive = null;
         }
+    }
 
         //
         // Connect the arm motor.
