@@ -23,10 +23,10 @@ public class Autonomous extends LinearOpMode {
         rightfrontMotor.setDirection(DcMotor.Direction.REVERSE);
         rightbackMotor.setDirection(DcMotor.Direction.REVERSE);
 
-        leftfrontMotor.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-        leftbackMotor.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-        rightfrontMotor.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-        rightbackMotor.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        leftfrontMotor.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+        leftbackMotor.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+        rightfrontMotor.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+        rightbackMotor.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
 
         leftfrontMotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
         rightbackMotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
@@ -36,15 +36,11 @@ public class Autonomous extends LinearOpMode {
 
         waitForStart();
 
-        //move forward for 250 ms
-        leftfrontMotor.setPower(1.0);
-        leftbackMotor.setPower(1.0);
-        rightfrontMotor.setPower(1.0);
-        rightbackMotor.setPower(1.0);
-        sleep(50);
+        //driveForward(leftY, rightY, sleep for how many milsec)
+        driveForward(1.0, 1.0, 50);
 
         //turn 45 degrees
-        turnAngle(-45.0);
+        /*turnAngle(-45.0);
 
         //move forward for 4250 ms
         leftfrontMotor.setPower(1.0);
@@ -69,14 +65,14 @@ public class Autonomous extends LinearOpMode {
         leftfrontMotor.setPower(0.0);
         leftbackMotor.setPower(0.0);
         rightfrontMotor.setPower(0.0);
-        rightbackMotor.setPower(0.0);
+        rightbackMotor.setPower(0.0);*/
     }
 
     private void turnAngle(double theta) throws InterruptedException {
-        leftfrontMotor.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-        leftbackMotor.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-        rightfrontMotor.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-        rightbackMotor.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        leftfrontMotor.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+        leftbackMotor.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+        rightfrontMotor.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+        rightbackMotor.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
 
         double e = theta;
         double k = 1.0/90.0;
@@ -108,10 +104,23 @@ public class Autonomous extends LinearOpMode {
         leftbackMotor.setPower(0.0);
         rightfrontMotor.setPower(0.0);
         rightbackMotor.setPower(0.0);
-        
+
     }
 
+    private void driveForward(double leftY, double rightY) throws InterruptedException {
+        leftfrontMotor.setPower(leftY);
+        leftbackMotor.setPower(leftY);
+        rightfrontMotor.setPower(rightY);
+        rightbackMotor.setPower(rightY);
 
+    }
+
+    private void driveForward(double leftY, double rightY, long sleepAmount) throws InterruptedException {
+        driveForward(leftY, rightY);
+        sleep(sleepAmount);
+        driveForward(0.0, 0.0);
+
+    }
 
     /*private void moveDistance(double distance) throws InterruptedException {
 
