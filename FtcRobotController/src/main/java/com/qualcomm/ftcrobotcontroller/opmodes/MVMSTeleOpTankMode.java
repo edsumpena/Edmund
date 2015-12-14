@@ -30,7 +30,7 @@ public class MVMSTeleOpTankMode extends MVTeleOpTelemetry {
         float rightY = gamepad1.right_stick_y;
         telemetry.addData("RightY", rightY);
 
-        float leftY = gamepad1.left_stick_y;
+        float leftY = -gamepad1.left_stick_y;
         telemetry.addData("LeftY", leftY);
 
         leftY = Range.clip(leftY, -1,1);
