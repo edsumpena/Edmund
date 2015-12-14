@@ -20,59 +20,43 @@ public class Autonomous extends LinearOpMode {
         rightfrontMotor = hardwareMap.dcMotor.get("rightfront_motor");
         rightbackMotor = hardwareMap.dcMotor.get("rightback_motor");
 
-        rightfrontMotor.setDirection(DcMotor.Direction.REVERSE);
-        rightbackMotor.setDirection(DcMotor.Direction.REVERSE);
+        //rightfrontMotor.setDirection(DcMotor.Direction.REVERSE);
+        //rightbackMotor.setDirection(DcMotor.Direction.REVERSE);
 
         leftfrontMotor.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
         leftbackMotor.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
         rightfrontMotor.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
         rightbackMotor.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
-
-        leftfrontMotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
-        rightbackMotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
 
         sensorGyro = (ModernRoboticsI2cGyro) hardwareMap.gyroSensor.get("gyro");
         sensorGyro.calibrate();
 
         waitForStart();
 
-        //driveForward(leftY, rightY, sleep for how many milsec)
-        driveForward(1.0, 1.0, 50);
+        //tankDrive(leftY, rightY, sleep for how many milsec)
+        tankDrive(1.0, 1.0, 500);
 
         //turn 45 degrees
-        /*turnAngle(-45.0);
+        //turnAngle(-45.0);
+        tankDrive(-0.5, 0.5, 500);
 
-        //move forward for 4250 ms
-        leftfrontMotor.setPower(1.0);
-        leftbackMotor.setPower(1.0);
-        rightfrontMotor.setPower(1.0);
-        rightbackMotor.setPower(1.0);
-        sleep(3250);
+        //move forward for 2500 ms
+        tankDrive(1.0, 1.0, 1500);
 
-        //telemetry.addData("forward", "");
         //turn 90 degrees
-        turnAngle(-90.0);
+        //turnAngle(-90.0);
+        tankDrive(-0.5, 0.5, 1000);
 
         //move forward for 1000 ms
+        tankDrive(1.0, 1.0, 750);
 
-        leftfrontMotor.setPower(1.0);
-        leftbackMotor.setPower(1.0);
-        rightfrontMotor.setPower(1.0);
-        rightbackMotor.setPower(1.0);
-        sleep(1000);
-
-        //stop robot
-        leftfrontMotor.setPower(0.0);
-        leftbackMotor.setPower(0.0);
-        rightfrontMotor.setPower(0.0);
-        rightbackMotor.setPower(0.0);*/
     }
 
     private void turnAngle(double theta) throws InterruptedException {
-        leftfrontMotor.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+        /*leftfrontMotor.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
         leftbackMotor.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
         rightfrontMotor.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
-        rightbackMotor.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+        rightbackMotor.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);*/
 
         double e = theta;
         double k = 1.0/90.0;
@@ -107,18 +91,18 @@ public class Autonomous extends LinearOpMode {
 
     }
 
-    private void driveForward(double leftY, double rightY) throws InterruptedException {
+    private void tankDrive(double leftY, double rightY) throws InterruptedException {
         leftfrontMotor.setPower(leftY);
         leftbackMotor.setPower(leftY);
-        rightfrontMotor.setPower(rightY);
-        rightbackMotor.setPower(rightY);
+        rightfrontMotor.setPower(-rightY);
+        rightbackMotor.setPower(-rightY);
 
     }
 
-    private void driveForward(double leftY, double rightY, long sleepAmount) throws InterruptedException {
-        driveForward(leftY, rightY);
+    private void tankDrive(double leftY, double rightY, long sleepAmount) throws InterruptedException {
+        tankDrive(leftY, rightY);
         sleep(sleepAmount);
-        driveForward(0.0, 0.0);
+        tankDrive(0.0, 0.0);
 
     }
 
