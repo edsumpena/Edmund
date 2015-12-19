@@ -20,13 +20,8 @@ public class Autonomous extends LinearOpMode {
         rightfrontMotor = hardwareMap.dcMotor.get("rightfront_motor");
         rightbackMotor = hardwareMap.dcMotor.get("rightback_motor");
 
-        //rightfrontMotor.setDirection(DcMotor.Direction.REVERSE);
-        //rightbackMotor.setDirection(DcMotor.Direction.REVERSE);
-
-        leftfrontMotor.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
-        leftbackMotor.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
-        rightfrontMotor.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
-        rightbackMotor.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+        rightfrontMotor.setDirection(DcMotor.Direction.REVERSE);
+        rightbackMotor.setDirection(DcMotor.Direction.REVERSE);
 
         sensorGyro = (ModernRoboticsI2cGyro) hardwareMap.gyroSensor.get("gyro");
         sensorGyro.calibrate();
@@ -101,9 +96,30 @@ public class Autonomous extends LinearOpMode {
 
     private void tankDrive(double leftY, double rightY, long sleepAmount) throws InterruptedException {
         tankDrive(leftY, rightY);
+
         sleep(sleepAmount);
+
         tankDrive(0.0, 0.0);
 
+    }
+
+    private void encoderDrive(double leftY, double rightY, int encoderLength) throws InterruptedException {
+        tankDrive(leftY, rightY);
+
+        leftfrontMotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+        leftbackMotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+        rightfrontMotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+        rightbackMotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+
+        leftfrontMotor.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
+        leftbackMotor.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
+        rightfrontMotor.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
+        rightbackMotor.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
+
+        leftfrontMotor.setTargetPosition(encoderLength);
+        leftbackMotor.setTargetPosition(encoderLength);
+        rightfrontMotor.setTargetPosition(encoderLength);
+        rightbackMotor.setTargetPosition(encoderLength);
     }
 
     /*private void moveDistance(double distance) throws InterruptedException {
