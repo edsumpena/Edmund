@@ -30,8 +30,11 @@ public class MVMSTeleOpArcadeMode extends MVTeleOpTelemetry {
         float y = gamepad1.right_stick_y;
         float x = gamepad1.right_stick_x;
 
-        float left = (y + x)/2;
-        float right = (y - x)/2;
+        telemetry.addData("Y axis", gamepad1.right_stick_y);
+        telemetry.addData("X axis", gamepad1.right_stick_x);
+
+        float left = y + x;
+        float right = y - x;
 
         left = (float)scaleInput(left);
         right = (float)scaleInput(right);

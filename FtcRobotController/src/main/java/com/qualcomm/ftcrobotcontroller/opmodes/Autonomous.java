@@ -23,27 +23,32 @@ public class Autonomous extends LinearOpMode {
         rightfrontMotor.setDirection(DcMotor.Direction.REVERSE);
         rightbackMotor.setDirection(DcMotor.Direction.REVERSE);
 
+        leftfrontMotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+        leftbackMotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+        rightfrontMotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+        rightbackMotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+
         sensorGyro = (ModernRoboticsI2cGyro) hardwareMap.gyroSensor.get("gyro");
         sensorGyro.calibrate();
 
         waitForStart();
 
         //tankDrive(leftY, rightY, sleep for how many milsec)
-        tankDrive(1.0, 1.0, 500);
+        encoderDrive(1.0, 1.0, 2000);
 
         //turn 45 degrees
         //turnAngle(-45.0);
-        tankDrive(-0.5, 0.5, 500);
+        encoderDrive(-0.5, 0.5, 2000);
 
         //move forward for 2500 ms
-        tankDrive(1.0, 1.0, 1500);
+        encoderDrive(1.0, 1.0, 8000);
 
         //turn 90 degrees
         //turnAngle(-90.0);
-        tankDrive(-0.5, 0.5, 1000);
+        encoderDrive(-0.5, 0.5, 4000);
 
         //move forward for 1000 ms
-        tankDrive(1.0, 1.0, 750);
+        encoderDrive(1.0, 1.0, 4000);
 
     }
 
@@ -94,22 +99,17 @@ public class Autonomous extends LinearOpMode {
 
     }
 
-    private void tankDrive(double leftY, double rightY, long sleepAmount) throws InterruptedException {
+    /*private void tankDrive(double leftY, double rightY, long sleepAmount) throws InterruptedException {
         tankDrive(leftY, rightY);
 
         sleep(sleepAmount);
 
         tankDrive(0.0, 0.0);
 
-    }
+    }*/
 
     private void encoderDrive(double leftY, double rightY, int encoderLength) throws InterruptedException {
         tankDrive(leftY, rightY);
-
-        leftfrontMotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
-        leftbackMotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
-        rightfrontMotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
-        rightbackMotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
 
         leftfrontMotor.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
         leftbackMotor.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
