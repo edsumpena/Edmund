@@ -67,6 +67,7 @@ public class FtcOpModeRegister implements OpModeRegister {
     manager.register ("Autonomous", Autonomous.class);
     //manager.register("MVMSTeleOpMode", MVTeleOpMode.class);
     manager.register("MVMSTeleOpModeV2", MVMSTeleOpTankMode.class);
+    manager.register("MVMSTeleOpModeV3", MVMSTeleOpArcadeMode.class);
 
     /*
      * Uncomment any of the following lines if you want to register an op mode.

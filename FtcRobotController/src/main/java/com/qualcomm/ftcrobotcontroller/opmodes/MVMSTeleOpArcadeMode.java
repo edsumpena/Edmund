@@ -27,19 +27,19 @@ public class MVMSTeleOpArcadeMode extends MVTeleOpTelemetry {
     @Override
     public void loop() {
         //setting the power on the two DcMotors in a leaner function
-        float y = -gamepad1.right_stick_y;
+        float y = gamepad1.right_stick_y;
         float x = gamepad1.right_stick_x;
 
-        float left = y + x;
-        float right = y - x;
+        float left = (y + x)/2;
+        float right = (y - x)/2;
 
         left = (float)scaleInput(left);
         right = (float)scaleInput(right);
 
         leftback_motor.setPower (left);
         leftfront_motor.setPower (left);
-        rightback_motor.setPower (right);
-        rightfront_motor.setPower (right);
+        rightback_motor.setPower (-right);
+        rightfront_motor.setPower (-right);
 
     }
     double scaleInput(double dVal)  {
