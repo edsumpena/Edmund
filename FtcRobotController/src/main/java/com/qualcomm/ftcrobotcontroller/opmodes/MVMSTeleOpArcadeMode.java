@@ -27,7 +27,7 @@ public class MVMSTeleOpArcadeMode extends MVTeleOpTelemetry {
     @Override
     public void loop() {
         //setting the power on the two DcMotors in a leaner function
-        float y = gamepad1.right_stick_y;
+        float y = -gamepad1.right_stick_y;
         float x = gamepad1.right_stick_x;
 
         telemetry.addData("Y axis", gamepad1.right_stick_y);
