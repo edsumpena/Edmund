@@ -2,7 +2,6 @@ package com.qualcomm.ftcrobotcontroller.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.hardware.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.util.Range;
 
@@ -19,8 +18,9 @@ public class Autonomous extends LinearOpMode {
         leftbackMotor =hardwareMap.dcMotor.get("leftback_motor");
         rightfrontMotor = hardwareMap.dcMotor.get("rightfront_motor");
         rightbackMotor = hardwareMap.dcMotor.get("rightback_motor");
+        sensorGyro = (ModernRoboticsI2cGyro) hardwareMap.gyroSensor.get("sensorGyro");
 
-        leftfrontMotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+        /*leftfrontMotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
         leftbackMotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
         rightfrontMotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
         rightbackMotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
@@ -28,29 +28,28 @@ public class Autonomous extends LinearOpMode {
         leftfrontMotor.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
         leftbackMotor.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
         rightfrontMotor.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
-        rightbackMotor.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
+        rightbackMotor.setMode(DcMotorController.RunMode.RUN_TO_POSITION);*/
 
-        //sensorGyro = (ModernRoboticsI2cGyro) hardwareMap.gyroSensor.get("gyro");
-        //sensorGyro.calibrate();
+        sensorGyro.calibrate();
+        while(sensorGyro.isCalibrating());
+
 
         waitForStart();
 
         //tankDrive(leftY, rightY, sleep for how many milsec)
-        tankDrive(1.0, 1.0, 500);
+        //tankDrive(1.0, 1.0, 500);
 
         //turn 45 degrees
         //turnAngle(-45.0);
-        turnAngle(-45);
 
         //move forward for 2500 ms
-        tankDrive(1.0, 1.0, 1500);
+        //tankDrive(1.0, 1.0, 1500);
 
         //turn 90 degrees
-        //turnAngle(-90.0);
-        turnAngle(-90);
+        turnAngle(-90.0);
 
         //move forward for 1000 ms
-        tankDrive(1.0, 1.0, 750);
+        //tankDrive(1.0, 1.0, 750);
 
     }
 
@@ -58,11 +57,12 @@ public class Autonomous extends LinearOpMode {
 
         double e = theta;
         double a;
+
         //double[] turnPowerArray = {-1.0, -1.0, -1.0, -1.0, -0.8, -0.4, 0.1, 0.4, 0.8, 1.0, 1.0, 1.0, 1.0};
 
-        telemetry.addData("Heading", sensorGyro.getHeading());
-        sensorGyro.calibrate();
-        while(sensorGyro.isCalibrating());
+        a = sensorGyro.getHeading();
+        telemetry.addData("Heading", a);
+        theta = theta + a;
 
         // We have desired position adjustment in theta, which is a [-179, 179]
         // the current orientation is zero after being calibrated
@@ -81,7 +81,7 @@ public class Autonomous extends LinearOpMode {
             telemetry.addData("Heading", a);  // range of a is 0-359
 
             e = theta - a;
-            telemetry.addData("error", e);
+            telemetry.addData("Error", e);
 
             while(e < -180){
                 e = e + 360;}
@@ -104,7 +104,8 @@ public class Autonomous extends LinearOpMode {
             }else{
                 u = 1.0;
             }
-            tankDrive(u, u);
+            telemetry.addData("Power", u);
+            tankDrive(u, -u);
         }
         tankDrive(0, 0);
     }
@@ -128,14 +129,14 @@ public class Autonomous extends LinearOpMode {
 
     }
 
-    /*private void encoderDrive(double leftY, double rightY, int encoderLength) throws InterruptedException {
+    private void encoderDrive(double leftY, double rightY, int encoderLength) throws InterruptedException {
         tankDrive(leftY, rightY);
 
         leftfrontMotor.setTargetPosition(encoderLength);
         leftbackMotor.setTargetPosition(encoderLength);
         rightfrontMotor.setTargetPosition(encoderLength);
         rightbackMotor.setTargetPosition(encoderLength);
-    }*/
+    }
 
     /*private void moveDistance(double distance) throws InterruptedException {
 

@@ -33,51 +33,26 @@ package com.qualcomm.ftcrobotcontroller.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.hardware.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.hardware.DcMotorController;
 
-/**
- * A simple example of a linear op mode that will approach an IR beacon
- */
-public class EncoderExample extends LinearOpMode {
-    //set motor variables so they will be public everywhere
-    DcMotor motorRight;
-    DcMotor motorLeft;
+public class GyroTesting extends LinearOpMode {
+    ModernRoboticsI2cGyro sensorGyro;
+
     @Override
     public void runOpMode() throws InterruptedException {
-        //Code that will run when "Init" button is pressed on DS
-        //Log hardware devices so we can set motors
-        hardwareMap.logDevices();
 
-        //initialize motors
-        motorRight = hardwareMap.dcMotor.get("motor_2");
-        motorLeft = hardwareMap.dcMotor.get("motor_1");
+        sensorGyro = (ModernRoboticsI2cGyro) hardwareMap.gyroSensor.get("sensorGyro");
 
-        //reset encoders
-        motorRight.setMode(DcMotorController.RunMode.RESET_ENCODERS);
-        motorLeft.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+        sensorGyro.calibrate();
+        while(sensorGyro.isCalibrating());
 
-        //initialize encoder mode
-        motorRight.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
-        motorLeft.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
-
-        //reverse right motor because it is facing right not left, therefore power of 1 will make robot turn. This makes it so negating motor power values is not neccesary
-        motorRight.setDirection(DcMotor.Direction.REVERSE);
-
-        //set variable for encoder rotation (ANDYMARK MOTORS)
-        int rot = 1120;
-
-        waitForStart();
-        //Code that will run when "Init" button is pressed on RC
-        //drive forward distance encoders
-        //set speed encoder motors will move at
-        motorRight.setPower(1);
-        motorLeft.setPower(1);
-
-        //set motor positions to one rotation
-        motorLeft.setTargetPosition(rot);
-        motorRight.setTargetPosition(rot);
+        gyroLoop(4);
     }
-    private void tcWait(int millis) throws InterruptedException {
-        sleep(millis);
+    private void gyroLoop(int x){
+        while(x == 4){
+            double a = sensorGyro.getHeading();
+            telemetry.addData("Heading", a);
+        }
     }
 }

@@ -15,6 +15,7 @@ public class MVMSTeleOpTankMode extends MVTeleOpTelemetry {
     DcMotor rightback_motor;
     DcMotor leftfront_motor;
     DcMotor rightfront_motor;
+    DcMotor arm;
 
     @Override
     public void init() {
@@ -22,6 +23,7 @@ public class MVMSTeleOpTankMode extends MVTeleOpTelemetry {
         rightback_motor = hardwareMap.dcMotor.get("rightback_motor");
         leftfront_motor = hardwareMap.dcMotor.get("leftfront_motor");
         rightfront_motor = hardwareMap.dcMotor.get("rightfront_motor");
+        arm = hardwareMap.dcMotor.get("arm");
     }
     
     @Override

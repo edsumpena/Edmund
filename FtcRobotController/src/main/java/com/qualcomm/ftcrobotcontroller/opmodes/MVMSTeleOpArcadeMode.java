@@ -15,6 +15,7 @@ public class MVMSTeleOpArcadeMode extends MVTeleOpTelemetry {
     DcMotor rightback_motor;
     DcMotor leftfront_motor;
     DcMotor rightfront_motor;
+    DcMotor arm;
 
     @Override
     public void init() {
@@ -22,6 +23,7 @@ public class MVMSTeleOpArcadeMode extends MVTeleOpTelemetry {
         leftfront_motor = hardwareMap.dcMotor.get("leftfront_motor");
         rightback_motor = hardwareMap.dcMotor.get("rightback_motor");
         rightfront_motor = hardwareMap.dcMotor.get("rightfront_motor");
+        arm = hardwareMap.dcMotor.get("arm");
     }
 
     @Override
@@ -43,6 +45,14 @@ public class MVMSTeleOpArcadeMode extends MVTeleOpTelemetry {
         leftfront_motor.setPower (left);
         rightback_motor.setPower (-right);
         rightfront_motor.setPower (-right);
+
+        float y2 = gamepad1.left_stick_y;
+
+        telemetry.addData("Y2 axis", gamepad1.left_stick_y);
+
+        y2 = (float)scaleInput(y2);
+        y2 = y2/5;
+        arm.setPower(y2);
 
     }
     double scaleInput(double dVal)  {
