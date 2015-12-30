@@ -92,20 +92,20 @@ public class Autonomous extends LinearOpMode {
             double u;
 
             if (e < -60){
-                u = -1;
+                u = -0.3;
             }else if (e < -30){
-                u = -0.8;
+                u = -0.2;
             }else if (e < 0){
-                u = -0.4;
+                u = -0.1;
             }else if (e < 30){
-                u = 0.4;
+                u = 0.1;
             }else if (e < 60){
-                u = 0.8;
+                u = 0.2;
             }else{
-                u = 1.0;
+                u = 0.3;
             }
             telemetry.addData("Power", u);
-            tankDrive(u, -u);
+            tankDrive(u, -u, 100);
         }
         tankDrive(0, 0);
     }
