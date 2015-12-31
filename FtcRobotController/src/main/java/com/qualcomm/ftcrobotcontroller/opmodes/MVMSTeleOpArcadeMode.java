@@ -46,6 +46,7 @@ public class MVMSTeleOpArcadeMode extends MVTeleOpTelemetry {
         rightback_motor.setPower (-right);
         rightfront_motor.setPower (-right);
 
+        //this is all of the stuff for the arm
         float y2 = gamepad1.left_stick_y;
 
         telemetry.addData("Y2 axis", gamepad1.left_stick_y);
