@@ -26,7 +26,7 @@ public class MVMSTeleOpTankMode extends MVTeleOpTelemetry {
         rightfront_motor = hardwareMap.dcMotor.get("rightfront_motor");
         arm = hardwareMap.dcMotor.get("arm");
     }
-    
+
     @Override
     public void loop() {
         //setting the power on the entire right side
@@ -38,21 +38,18 @@ public class MVMSTeleOpTankMode extends MVTeleOpTelemetry {
         telemetry.addData("LeftY", leftY);
 
         //this is all of the stuff for the arm ALL OF IT
-        boolean ArmUp = gamepad1.dpad_up;
-        telemetry.addData("Arm going up", ArmUp);
-        boolean ArmDown = gamepad1.dpad_down;
-        telemetry.addData("Arm going down", ArmDown);
-        if (ArmUp){
-            arm.setPower(1);
+        boolean armUp = gamepad1.dpad_up;
+        telemetry.addData("Arm going up", armUp);
+        boolean armDown = gamepad1.dpad_down;
+        telemetry.addData("Arm going down", armDown);
+        if (armUp == true){
+            arm.setPower(0.2);
         }
-
-        if (ArmDown) {
-            arm.setPower(-1);
+        else if (armDown == true) {
+            arm.setPower(-0.2);
         }
-
-        //making sure that the motors power can't go a power of more than -1 and 1
-        leftY = Range.clip(leftY, -1,1);
-        rightY = Range.clip(rightY, -1, 1);
+        else {
+            arm.setPower(0);
 
         //making the scale input on both of the motors
         leftY = (float)scaleInput(leftY);
@@ -65,7 +62,7 @@ public class MVMSTeleOpTankMode extends MVTeleOpTelemetry {
         rightfront_motor.setPower(rightY);
 
     }
-    double scaleInput(double dVal)  {
+    double scaleInpul(double dVal)  {
         double[] scaleArray = { 0.0, 0.05, 0.09, 0.10, 0.12, 0.15, 0.18, 0.24,
                 0.30, 0.36, 0.43, 0.50, 0.60, 0.72, 0.85, 1.00, 1.00 };
 
