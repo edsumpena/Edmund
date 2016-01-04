@@ -40,20 +40,23 @@ public class MVMSTeleOpTankMode extends MVTeleOpTelemetry {
         //this is all of the stuff for the arm ALL OF IT
         boolean armUp = gamepad1.dpad_up;
         telemetry.addData("Arm going up", armUp);
+
         boolean armDown = gamepad1.dpad_down;
         telemetry.addData("Arm going down", armDown);
+
         if (armUp == true){
-            arm.setPower(0.2);
+            arm.setPower(0.6);
         }
         else if (armDown == true) {
-            arm.setPower(-0.2);
+            arm.setPower(-0.6);
         }
         else {
-            arm.setPower(0);
+            arm.setPower(0.0);
+        }
 
         //making the scale input on both of the motors
-        leftY = (float)scaleInput(leftY);
-        rightY = (float)scaleInput(rightY);
+        leftY = (float) scaleInput(leftY);
+        rightY = (float) scaleInput(rightY);
 
         //setting the power on all of the motors
         leftback_motor.setPower(leftY);
@@ -62,7 +65,8 @@ public class MVMSTeleOpTankMode extends MVTeleOpTelemetry {
         rightfront_motor.setPower(rightY);
 
     }
-    double scaleInpul(double dVal)  {
+
+    double scaleInput(double dVal)  {
         double[] scaleArray = { 0.0, 0.05, 0.09, 0.10, 0.12, 0.15, 0.18, 0.24,
                 0.30, 0.36, 0.43, 0.50, 0.60, 0.72, 0.85, 1.00, 1.00 };
 

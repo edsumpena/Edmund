@@ -28,7 +28,7 @@ public class MVMSTeleOpArcadeMode extends MVTeleOpTelemetry {
 
     @Override
     public void loop() {
-        //setting the power on the two DcMotors in a leaner function
+        //setting the power on the two DcMotors in a linear function
         float y = -gamepad1.right_stick_y;
         float x = gamepad1.right_stick_x;
 
@@ -47,12 +47,11 @@ public class MVMSTeleOpArcadeMode extends MVTeleOpTelemetry {
         rightfront_motor.setPower (-right);
 
         //this is all of the stuff for the arm
-        float y2 = gamepad1.left_stick_y;
+        double y2 = gamepad1.left_stick_y;
 
         telemetry.addData("Y2 axis", gamepad1.left_stick_y);
 
         y2 = (float)scaleInput(y2);
-        y2 = y2/5;
         arm.setPower(y2);
 
     }

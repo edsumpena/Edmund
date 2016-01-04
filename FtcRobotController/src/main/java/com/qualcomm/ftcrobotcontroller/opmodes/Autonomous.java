@@ -37,19 +37,21 @@ public class Autonomous extends LinearOpMode {
         waitForStart();
 
         //tankDrive(leftY, rightY, sleep for how many milsec)
-        //tankDrive(1.0, 1.0, 500);
+        tankDrive(1.0, 1.0, 1000);
 
+        sensorGyro.calibrate();
+        while(sensorGyro.isCalibrating());
         //turn 45 degrees
-        //turnAngle(-45.0);
+        turnAngle(-45.0);
 
         //move forward for 2500 ms
-        //tankDrive(1.0, 1.0, 1500);
+        tankDrive(1.0, 1.0, 2000);
 
         //turn 90 degrees
         turnAngle(-90.0);
 
         //move forward for 1000 ms
-        //tankDrive(1.0, 1.0, 750);
+        tankDrive(1.0, 1.0, 750);
 
     }
 
@@ -92,22 +94,22 @@ public class Autonomous extends LinearOpMode {
             double u;
 
             if (e < -60){
-                u = -0.3;
+                u = -0.9;
             }else if (e < -30){
-                u = -0.2;
+                u = -0.5;
             }else if (e < 0){
-                u = -0.1;
+                u = -0.3;
             }else if (e < 30){
-                u = 0.1;
-            }else if (e < 60){
-                u = 0.2;
-            }else{
                 u = 0.3;
+            }else if (e < 60){
+                u = 0.5;
+            }else{
+                u = 0.9;
             }
             telemetry.addData("Power", u);
-            tankDrive(u, -u, 100);
+            tankDrive(u, -u);
         }
-        tankDrive(0, 0);
+        tankDrive(0.0, 0.0);
     }
 
     private void tankDrive(double leftY, double rightY) throws InterruptedException {
@@ -129,14 +131,14 @@ public class Autonomous extends LinearOpMode {
 
     }
 
-    private void encoderDrive(double leftY, double rightY, int encoderLength) throws InterruptedException {
+    /*private void encoderDrive(double leftY, double rightY, int encoderLength) throws InterruptedException {
         tankDrive(leftY, rightY);
 
         leftfrontMotor.setTargetPosition(encoderLength);
         leftbackMotor.setTargetPosition(encoderLength);
         rightfrontMotor.setTargetPosition(encoderLength);
         rightbackMotor.setTargetPosition(encoderLength);
-    }
+    }/*
 
     /*private void moveDistance(double distance) throws InterruptedException {
 
