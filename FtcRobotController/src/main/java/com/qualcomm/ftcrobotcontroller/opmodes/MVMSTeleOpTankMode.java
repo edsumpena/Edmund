@@ -10,8 +10,7 @@ import com.qualcomm.robotcore.util.Range;
  * Created by Juan Pablo Martinez on 11/29/2015.
  */
 public class MVMSTeleOpTankMode extends MVTeleOpTelemetry {
-    //all of the motors variables
-    DcMotor leftback_motor;
+    DcMotor leftback_motor;     //identify all of the motors
     DcMotor rightback_motor;
     DcMotor leftfront_motor;
     DcMotor rightfront_motor;
@@ -19,51 +18,44 @@ public class MVMSTeleOpTankMode extends MVTeleOpTelemetry {
 
     @Override
     public void init() {
-        //all of the stuff in the quotation marks are reconized in the config files and the variables are in the program
-        leftback_motor = hardwareMap.dcMotor.get("leftback_motor");
-        rightback_motor = hardwareMap.dcMotor.get("rightback_motor");
-        leftfront_motor = hardwareMap.dcMotor.get("leftfront_motor");
-        rightfront_motor = hardwareMap.dcMotor.get("rightfront_motor");
+        leftback_motor = hardwareMap.dcMotor.get("leftback_motor");     //link each motor to each
+        leftfront_motor = hardwareMap.dcMotor.get("leftfront_motor");   //of the motors in the
+        rightback_motor = hardwareMap.dcMotor.get("rightback_motor");   //configure file on the
+        rightfront_motor = hardwareMap.dcMotor.get("rightfront_motor"); //phone
         arm = hardwareMap.dcMotor.get("arm");
     }
 
     @Override
-    public void loop() {
-        //setting the power on the entire right side
-        float rightY = gamepad1.right_stick_y;
-        telemetry.addData("RightY", rightY);
+    public void loop() {                        //create a loop where the code goes
+        float rightY = gamepad1.right_stick_y;  //create a float based off of the y axis of the left
+        float leftY = -gamepad1.left_stick_y;   //and right joysticks
 
-        //setting the power on the entire left side
-        float leftY = -gamepad1.left_stick_y;
+        telemetry.addData("RightY", rightY);    //print out the current y axis of both joysticks
         telemetry.addData("LeftY", leftY);
 
-        //this is all of the stuff for the arm ALL OF IT
-        boolean armUp = gamepad1.dpad_up;
-        telemetry.addData("Arm going up", armUp);
+        leftY = (float) scaleInput(leftY);      //use the scaleInput function on the power to scale
+        rightY = (float) scaleInput(rightY);    //it
 
-        boolean armDown = gamepad1.dpad_down;
-        telemetry.addData("Arm going down", armDown);
-
-        if (armUp == true){
-            arm.setPower(0.6);
-        }
-        else if (armDown == true) {
-            arm.setPower(-0.6);
-        }
-        else {
-            arm.setPower(0.0);
-        }
-
-        //making the scale input on both of the motors
-        leftY = (float) scaleInput(leftY);
-        rightY = (float) scaleInput(rightY);
-
-        //setting the power on all of the motors
-        leftback_motor.setPower(leftY);
+        leftback_motor.setPower(leftY);         //set the power to each corresponding motor
         rightback_motor.setPower(rightY);
         leftfront_motor.setPower(leftY);
         rightfront_motor.setPower(rightY);
 
+        boolean armUp = gamepad1.dpad_up;       //because the dpad is a boolean, we must use a
+        boolean armDown = gamepad1.dpad_down;   //boolean data type
+
+        telemetry.addData("Arm up", armUp);     //print out weather if it true or false
+        telemetry.addData("Arm down", armDown);
+
+        if (armUp == true){                     //if armUp is true
+            arm.setPower(0.6);                  //set power to 0.6
+        }
+        else if (armDown == true) {             //if armDown is true
+            arm.setPower(-0.6);                 //set power to -0.6
+        }
+        else {                                  //or else
+            arm.setPower(0.0);                  //set power to 0
+        }
     }
 
     double scaleInput(double dVal)  {

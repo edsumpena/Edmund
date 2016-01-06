@@ -10,8 +10,7 @@ import com.qualcomm.robotcore.util.Range;
  * Created by Robert Lee on 12/19/2015.
  */
 public class MVMSTeleOpArcadeMode extends MVTeleOpTelemetry {
-    //motor variables
-    DcMotor leftback_motor;
+    DcMotor leftback_motor;     //identify each motor
     DcMotor rightback_motor;
     DcMotor leftfront_motor;
     DcMotor rightfront_motor;
@@ -19,40 +18,39 @@ public class MVMSTeleOpArcadeMode extends MVTeleOpTelemetry {
 
     @Override
     public void init() {
-        leftback_motor = hardwareMap.dcMotor.get("leftback_motor");
-        leftfront_motor = hardwareMap.dcMotor.get("leftfront_motor");
-        rightback_motor = hardwareMap.dcMotor.get("rightback_motor");
-        rightfront_motor = hardwareMap.dcMotor.get("rightfront_motor");
+        leftback_motor = hardwareMap.dcMotor.get("leftback_motor");     //link each motor we
+        leftfront_motor = hardwareMap.dcMotor.get("leftfront_motor");   //identified to the
+        rightback_motor = hardwareMap.dcMotor.get("rightback_motor");   //configure file on the
+        rightfront_motor = hardwareMap.dcMotor.get("rightfront_motor"); //phone
         arm = hardwareMap.dcMotor.get("arm");
     }
 
     @Override
-    public void loop() {
-        //setting the power on the two DcMotors in a linear function
-        float y = -gamepad1.right_stick_y;
-        float x = gamepad1.right_stick_x;
+    public void loop() {                                    //create a loop where the code goes
+        float y = -gamepad1.right_stick_y;                  //create a float which is based off
+        float x = gamepad1.right_stick_x;                   //of what the current x/y of the right
+                                                            //joystick is
+        telemetry.addData("Y axis", gamepad1.right_stick_y);//print out the current x/y axis of
+        telemetry.addData("X axis", gamepad1.right_stick_x);//the joystick
 
-        telemetry.addData("Y axis", gamepad1.right_stick_y);
-        telemetry.addData("X axis", gamepad1.right_stick_x);
+        float left = y + x;                                 //set power to turn when x axis is used
+        float right = y - x;                                //but to move forwards and backwards
+                                                            //when y axis is used
+        left = (float)scaleInput(left);                     //use the scaleInput function to scale
+        right = (float)scaleInput(right);                   //the power
 
-        float left = y + x;
-        float right = y - x;
-
-        left = (float)scaleInput(left);
-        right = (float)scaleInput(right);
-
-        leftback_motor.setPower (left);
+        leftback_motor.setPower (left);                     //set the left power to each left motor
         leftfront_motor.setPower (left);
-        rightback_motor.setPower (-right);
+        rightback_motor.setPower (-right);                  //set the right power to each right motor
         rightfront_motor.setPower (-right);
 
-        //this is all of the stuff for the arm
-        double y2 = gamepad1.left_stick_y;
-
-        telemetry.addData("Y2 axis", gamepad1.left_stick_y);
-
-        y2 = (float)scaleInput(y2);
-        arm.setPower(y2);
+        float y2 = gamepad1.left_stick_y;                   //create a float called y2 based off of
+                                                            //the y axis of the left joystick
+        telemetry.addData("Y2 axis", gamepad1.left_stick_y);//print out the current y axis of the
+                                                            //left joystick
+        y2 = (float)scaleInput(y2);                         //use the scaleInput function to scale
+                                                            //the power
+        arm.setPower(y2);                                   //set the power to the motor
 
     }
     double scaleInput(double dVal)  {
