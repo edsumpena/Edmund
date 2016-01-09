@@ -6,27 +6,29 @@ import com.qualcomm.hardware.ModernRoboticsI2cGyro;
 import java.util.Timer;
 
 public class Autonomous extends LinearOpMode {
-    DcMotor leftfrontMotor;             //identify the motors and sensors
+    DcMotor leftfrontMotor;     //identify the motors and sensors
     DcMotor leftbackMotor;
     DcMotor rightfrontMotor;
     DcMotor rightbackMotor;
+    DcMotor arm;
     ModernRoboticsI2cGyro sensorGyro;
 
     @Override
     public void runOpMode() throws InterruptedException {
-        leftfrontMotor =hardwareMap.dcMotor.get("leftfront_motor");     //grab the configure file on the phone
-        leftbackMotor =hardwareMap.dcMotor.get("leftback_motor");       //and compare it to the motors/sensors
+        leftfrontMotor = hardwareMap.dcMotor.get("leftfront_motor");     //grab the configure file on the phone
+        leftbackMotor = hardwareMap.dcMotor.get("leftback_motor");       //and compare it to the motors/sensors
         rightfrontMotor = hardwareMap.dcMotor.get("rightfront_motor");  //in the code
         rightbackMotor = hardwareMap.dcMotor.get("rightback_motor");
+        arm = hardwareMap.dcMotor.get("arm");
         sensorGyro = (ModernRoboticsI2cGyro) hardwareMap.gyroSensor.get("sensorGyro");
 
         waitForStart();
 
-        tankDrive(0.5, 0.5, 1000);  //move forward from the starting position
+        tankDrive(0.5, 0.5, 500);  //move forward from the starting position
         tankDrive(-0.5, 0.5, 500);  //turn approximately 45 degrees
         tankDrive(0.5, 0.5, 2000);  //move forward for 2 seconds at half speed
-        tankDrive(-0.5, 0.5, 1000); //turn approximately 90 degrees
-        tankDrive(0.5, 0.5, 750);   //move forward for 3/4 second at half speed
+        tankDrive(-0.5, 0.5, 1000);  //turn approximately 90 degrees
+        tankDrive(0.25, 0.25, 1500);   //move forward for 3/4 second at half speed
     }
 
     private void turnAngle(double theta) throws InterruptedException {
@@ -48,7 +50,6 @@ public class Autonomous extends LinearOpMode {
         // we will need to do right turn action
         // If the difference is negative [-180, -1], we shall do left turn action
 
-        long startTime = System.currentTimeMillis();
         while(e > 1 || e < -1) {              //create a while loop which will go on until error is close to 0
             a = sensorGyro.getHeading();      //refresh the current heading for a
             telemetry.addData("Heading", a);  //print out the current heading
@@ -56,11 +57,11 @@ public class Autonomous extends LinearOpMode {
             e = theta - a;                    //calculate error through what angle we want to be at by subtracting
             telemetry.addData("Error", e);    //the current heading
 
-            while (e < -180) {  //create a while loop based on the current error
+            if (e < -180) {     //create a while loop based on the current error
                 e = e + 360;    //when the error is less then -180, you need to add 360 so you won't
             }                   //turn multiple times
 
-            while (e > 180) {   //create another while loops based on the error
+            if (e > 180) {      //create another while loops based on the error
                 e = e - 360;    //when the error is more than 180, you minus 360 so you won't turn
             }                   //multiple times
 
@@ -115,6 +116,13 @@ public class Autonomous extends LinearOpMode {
 
     }
 
+    private void armDrive(double armPower, long sleepAmount) throws InterruptedException {
+        arm.setPower(armPower); //set the arm power according to the double armPower
+
+        sleep(sleepAmount);     //sleep for a certain amount of milliseconds
+
+        arm.setPower(0.0);      //stop the motors
+    }
 
     /*private void encoderDrive(double leftY, double rightY, int encoderLength) throws InterruptedException {
         tankDrive(leftY, rightY);

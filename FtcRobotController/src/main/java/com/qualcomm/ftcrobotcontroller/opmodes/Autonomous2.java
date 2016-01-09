@@ -3,66 +3,40 @@ package com.qualcomm.ftcrobotcontroller.opmodes;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.hardware.ModernRoboticsI2cGyro;
-import com.qualcomm.robotcore.util.Range;
+import java.util.Timer;
 
 public class Autonomous2 extends LinearOpMode {
-    DcMotor leftfrontMotor;
+    DcMotor leftfrontMotor;     //identify the motors and sensors
     DcMotor leftbackMotor;
     DcMotor rightfrontMotor;
     DcMotor rightbackMotor;
+    DcMotor arm;
     ModernRoboticsI2cGyro sensorGyro;
 
     @Override
     public void runOpMode() throws InterruptedException {
-        leftfrontMotor =hardwareMap.dcMotor.get("leftfront_motor");
-        leftbackMotor =hardwareMap.dcMotor.get("leftback_motor");
-        rightfrontMotor = hardwareMap.dcMotor.get("rightfront_motor");
+        leftfrontMotor = hardwareMap.dcMotor.get("leftfront_motor");     //grab the configure file on the phone
+        leftbackMotor = hardwareMap.dcMotor.get("leftback_motor");       //and compare it to the motors/sensors
+        rightfrontMotor = hardwareMap.dcMotor.get("rightfront_motor");  //in the code
         rightbackMotor = hardwareMap.dcMotor.get("rightback_motor");
+        arm = hardwareMap.dcMotor.get("arm");
         sensorGyro = (ModernRoboticsI2cGyro) hardwareMap.gyroSensor.get("sensorGyro");
-
-        /*leftfrontMotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
-        leftbackMotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
-        rightfrontMotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
-        rightbackMotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
-
-        leftfrontMotor.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
-        leftbackMotor.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
-        rightfrontMotor.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
-        rightbackMotor.setMode(DcMotorController.RunMode.RUN_TO_POSITION);*/
-
-        sensorGyro.calibrate();
-        while(sensorGyro.isCalibrating());
-
 
         waitForStart();
 
-        //tankDrive(leftY, rightY, sleep for how many milsec)
-        tankDrive(1.0, 1.0, 1000);
-
-        //turn 45 degrees
-        turnAngle(45.0);
-
-        //move forward for 2500 ms
-        tankDrive(1.0, 1.0, 2000);
-
-        //turn 90 degrees
-        turnAngle(90.0);
-
-        //move forward for 1000 ms
-        tankDrive(1.0, 1.0, 750);
-
+        tankDrive(0.3, 0.3, 4600);
+        tankDrive(0.5, -0.5, 600);
+        tankDrive(0.2, 0.2, 1250);
+        //armDrive(0.5, 750);
     }
 
     private void turnAngle(double theta) throws InterruptedException {
-
-        double e = theta;
-        double a;
-
-        //double[] turnPowerArray = {-1.0, -1.0, -1.0, -1.0, -0.8, -0.4, 0.1, 0.4, 0.8, 1.0, 1.0, 1.0, 1.0};
-
-        a = sensorGyro.getHeading();
-        telemetry.addData("Heading", a);
-
+        //add double theta, to tell how far we want to turn
+        double e = theta;                   //identify that the error(how far we are from reaching our destination) is equal to theta
+        double a = sensorGyro.getHeading(); //make double a the gyro's current heading
+        telemetry.addData("Heading", a);    //print out what the current heading is
+        theta = theta + a;                  //make it so we don't have to calibrate the gyro because we
+        telemetry.addData("Theta", theta);  //are adding the current heading to how far we want to turn
         // We have desired position adjustment in theta, which is a [-179, 179]
         // the current orientation is zero after being calibrated
         // goal is to adjust direction so the final orientation is theta
@@ -75,44 +49,57 @@ public class Autonomous2 extends LinearOpMode {
         // we will need to do right turn action
         // If the difference is negative [-180, -1], we shall do left turn action
 
-        while(e > 0.1 || e < -0.1){
-            a = sensorGyro.getHeading();      // read the gyro heading to a
-            telemetry.addData("Heading", a);  // range of a is 0-359
+        while(e > 1 || e < -1) {              //create a while loop which will go on until error is close to 0
+            a = sensorGyro.getHeading();      //refresh the current heading for a
+            telemetry.addData("Heading", a);  //print out the current heading
 
-            e = theta - a;
-            telemetry.addData("Error", e);
+            e = theta - a;                    //calculate error through what angle we want to be at by subtracting
+            telemetry.addData("Error", e);    //the current heading
 
-            while(e < -180){
-                e = e + 360;}
+            if (e < -180) {     //create a while loop based on the current error
+                e = e + 360;    //when the error is less then -180, you need to add 360 so you won't
+            }                   //turn multiple times
 
-            while(e > 180){
-                e = e - 360;}
+            if (e > 180) {      //create another while loops based on the error
+                e = e - 360;    //when the error is more than 180, you minus 360 so you won't turn
+            }                   //multiple times
 
-            double u;
+            double u;           //identify double u which will be the power of the motors
 
-            if (e < -60){
-                u = -0.3;
-            }else if (e < -30){
-                u = -0.2;
-            }else if (e < 0){
-                u = -0.1;
-            }else if (e < 30){
-                u = 0.1;
-            }else if (e < 60){
-                u = 0.2;
-            }else{
-                u = 0.3;
+            //there are different types of turning speeds based on the errors
+            if (e < -60){       //if the error is less then -60, then set the power to -0.7 to
+                u = -0.7;       //turn right at a fast speed
+            }else if (e < 0){   //or else if error is less then 0, set the power less, to -0.4
+                u = -0.4;       //to be more precise
+            }else if (e < 60){  //although, if you over shoot it, or you start at a positive error,
+                u = 0.4;        //the power is set to reverse at positive 0.4
+            }else{              //when you are over 60 error, the power must be set at 0.7 to
+                u = 0.7;        //maximize the speed the robot turns
             }
-            telemetry.addData("Power", u);
-            tankDrive(u, -u, 100);
+
+            //if (e < -60){
+            //    u = -0.6;
+            //}else if (e < -30){
+            //    u = -0.5;
+            //}else if (e < 0){
+            //    u = -0.4;
+            //}else if (e < 30){
+            //    u = 0.4;
+            //}else if (e < 60){
+            //    u = 0.5;
+            //}else{
+            //    u = 0.6;
+            //}
+            telemetry.addData("Power", u); //print out what the current power is
+            tankDrive(u, -u);              //send the power to the wheels
         }
-        tankDrive(0, 0);
+        tankDrive(0.0, 0.0);               //after the while loop finishes, set the power to 0
     }
 
     private void tankDrive(double leftY, double rightY) throws InterruptedException {
-        rightY = -rightY;
+        rightY = -rightY;               //flip the power of the right side
 
-        leftfrontMotor.setPower(leftY);
+        leftfrontMotor.setPower(leftY); //set the according power to each motor
         leftbackMotor.setPower(leftY);
         rightfrontMotor.setPower(rightY);
         rightbackMotor.setPower(rightY);
@@ -120,12 +107,20 @@ public class Autonomous2 extends LinearOpMode {
     }
 
     private void tankDrive(double leftY, double rightY, long sleepAmount) throws InterruptedException {
-        tankDrive(leftY, rightY);
+        tankDrive(leftY, rightY); //use the tankDrive function to add power
 
-        sleep(sleepAmount);
+        sleep(sleepAmount);       //sleep for a certain amount of milliseconds
 
-        tankDrive(0.0, 0.0);
+        tankDrive(0.0, 0.0);      //stop the motors
 
+    }
+
+    private void armDrive(double armPower, long sleepAmount) throws InterruptedException {
+        arm.setPower(armPower); //set the arm power according to the double armPower
+
+        sleep(sleepAmount);     //sleep for a certain amount of milliseconds
+
+        arm.setPower(0.0);      //stop the motors
     }
 
     /*private void encoderDrive(double leftY, double rightY, int encoderLength) throws InterruptedException {
