@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.hardware.ModernRoboticsI2cGyro;
 import java.util.Timer;
 
-public class Autonomous2 extends LinearOpMode {
+public class Autonomous3 extends LinearOpMode {
     DcMotor leftfrontMotor;     //identify the motors and sensors
     DcMotor leftbackMotor;
     DcMotor rightfrontMotor;
@@ -25,7 +25,7 @@ public class Autonomous2 extends LinearOpMode {
         waitForStart();
 
         tankDrive(0.3, 0.3, 3500);
-        tankDrive(0.4, 0.2, 500);
+        tankDrive(0.0, 0.5, 500);
     }
 
     private void turnAngle(double theta) throws InterruptedException {

@@ -48,10 +48,10 @@ public class MVMSTeleOpTankMode extends MVTeleOpTelemetry {
         telemetry.addData("Arm down", armDown);
 
         if (armUp == true){                     //if armUp is true
-            arm.setPower(0.6);                  //set power to 0.6
+            arm.setPower(0.4);                  //set power to 0.6
         }
         else if (armDown == true) {             //if armDown is true
-            arm.setPower(-0.6);                 //set power to -0.6
+            arm.setPower(-0.4);                 //set power to -0.6
         }
         else {                                  //or else
             arm.setPower(0.0);                  //set power to 0
