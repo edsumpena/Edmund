@@ -1,21 +1,20 @@
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
 import com.qualcomm.hardware.ModernRoboticsI2cColorSensor;
+import com.qualcomm.hardware.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.hardware.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import java.util.Timer;
-
-public class Autonomous extends LinearOpMode {
+public class Autonomous8 extends LinearOpMode {
     DcMotor leftfrontMotor;     //identify the motors and sensors
     DcMotor leftbackMotor;
     DcMotor rightfrontMotor;
     DcMotor rightbackMotor;
     DcMotor arm;
     ModernRoboticsI2cGyro sensorGyro;
+    ModernRoboticsI2cColorSensor sensorColor;
     Servo climbers;
 
     @Override
@@ -26,6 +25,7 @@ public class Autonomous extends LinearOpMode {
         rightbackMotor = hardwareMap.dcMotor.get("rightback_motor");
         arm = hardwareMap.dcMotor.get("arm");
         sensorGyro = (ModernRoboticsI2cGyro) hardwareMap.gyroSensor.get("sensorGyro");
+        sensorColor = (ModernRoboticsI2cColorSensor) hardwareMap.colorSensor.get("sensorColor");
         climbers = hardwareMap.servo.get("climbers");
 
         waitForStart();

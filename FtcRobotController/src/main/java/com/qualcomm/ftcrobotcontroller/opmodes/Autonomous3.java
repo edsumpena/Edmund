@@ -1,8 +1,12 @@
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
+import com.qualcomm.hardware.ModernRoboticsI2cColorSensor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.hardware.ModernRoboticsI2cGyro;
+import com.qualcomm.robotcore.hardware.DcMotorController;
+import com.qualcomm.robotcore.hardware.Servo;
+
 import java.util.Timer;
 
 public class Autonomous3 extends LinearOpMode {
@@ -12,6 +16,7 @@ public class Autonomous3 extends LinearOpMode {
     DcMotor rightbackMotor;
     DcMotor arm;
     ModernRoboticsI2cGyro sensorGyro;
+    Servo climbers;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -21,11 +26,15 @@ public class Autonomous3 extends LinearOpMode {
         rightbackMotor = hardwareMap.dcMotor.get("rightback_motor");
         arm = hardwareMap.dcMotor.get("arm");
         sensorGyro = (ModernRoboticsI2cGyro) hardwareMap.gyroSensor.get("sensorGyro");
+        climbers = hardwareMap.servo.get("climbers");
 
         waitForStart();
 
-        tankDrive(0.3, 0.3, 3500);
-        tankDrive(0.0, 0.5, 500);
+        tankDrive(0.3, 0.3, 5100);
+        tankDrive(0.5, -0.5, 350);
+        tankDrive(0.2, 0.2, 1000);
+        armDrive(0.3, 1000);
+
     }
 
     private void turnAngle(double theta) throws InterruptedException {
@@ -113,12 +122,33 @@ public class Autonomous3 extends LinearOpMode {
 
     }
 
-    private void armDrive(double armPower, long sleepAmount) throws InterruptedException {
-        arm.setPower(armPower); //set the arm power according to the double armPower
+    private void armDrive(double armPosition, long sleepAmount) throws InterruptedException {
+        climbers.setPosition(armPosition); //set the arm power according to the double armPower
 
         sleep(sleepAmount);     //sleep for a certain amount of milliseconds
 
-        arm.setPower(0.0);      //stop the motors
+        climbers.setPosition(1.0);      //stop the motors
+    }
+
+    private void moveDistance(double leftY, double rightY, int distance) throws InterruptedException {
+
+        leftbackMotor.setTargetPosition(distance);
+        rightbackMotor.setTargetPosition(distance);
+
+        leftbackMotor.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
+        rightbackMotor.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
+
+        leftfrontMotor.setPower(leftY);
+        leftbackMotor.setPower(leftY);
+        rightfrontMotor.setPower(rightY);
+        rightbackMotor.setPower(rightY);
+
+        if (leftbackMotor.getPower() < 0.1) {
+            leftfrontMotor.setPower(0.0);
+        }
+        if (rightbackMotor.getPower() < 0.1) {
+            rightfrontMotor.setPower(0.0);
+        }
     }
 
     /*private void encoderDrive(double leftY, double rightY, int encoderLength) throws InterruptedException {
@@ -128,31 +158,5 @@ public class Autonomous3 extends LinearOpMode {
         leftbackMotor.setTargetPosition(encoderLength);
         rightfrontMotor.setTargetPosition(encoderLength);
         rightbackMotor.setTargetPosition(encoderLength);
-    }/*
-
-    /*private void moveDistance(double distance) throws InterruptedException {
-
-        leftMotor.setPower(1.0);
-        rightMotor.setPower(1.0);
-        sleep(distance);
-
-
-        leftMotor.setMode(DcMotorController.RunMode .RESET_ENCODERS);
-        rightMotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
-
-        leftMotor.setTargetPosition((int)(distance*1440));
-        rightMotor.setTargetPosition((int)(distance*1440));
-
-        leftMotor.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
-       rightMotor.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
-
-        leftMotor.setPower(1.0);
-        rightMotor.setPower(1.0);
-
-        while(leftMotor.isBusy()&& rightMotor.isBusy());
-
-        leftMotor.setPower(0.0);
-        rightMotor.setPower(0.0);
-
     }*/
 }

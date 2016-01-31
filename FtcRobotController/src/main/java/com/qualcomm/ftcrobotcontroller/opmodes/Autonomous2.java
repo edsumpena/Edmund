@@ -24,8 +24,7 @@ public class Autonomous2 extends LinearOpMode {
 
         waitForStart();
 
-        tankDrive(0.3, 0.3, 3500);
-        tankDrive(0.4, 0.2, 500);
+        tankDrive(0.5, 0.5, 3500);
     }
 
     private void turnAngle(double theta) throws InterruptedException {

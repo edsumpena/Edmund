@@ -17,6 +17,9 @@ public class MVMSTeleOpTankMode extends MVTeleOpTelemetry {
     DcMotor arm;
     Servo climbers;
 
+    final double open = 0.0;
+    final double close = 0.5;
+
     @Override
     public void init() {
         leftback_motor = hardwareMap.dcMotor.get("leftback_motor");     //link each motor to each
@@ -29,6 +32,7 @@ public class MVMSTeleOpTankMode extends MVTeleOpTelemetry {
 
     @Override
     public void loop() {                        //create a loop where the code goes
+
         float rightY = gamepad1.right_stick_y;  //create a float based off of the y axis of the left
         float leftY = -gamepad1.left_stick_y;   //and right joysticks
 
@@ -37,6 +41,15 @@ public class MVMSTeleOpTankMode extends MVTeleOpTelemetry {
 
         leftY = (float) scaleInput(leftY);      //use the scaleInput function on the power to scale
         rightY = (float) scaleInput(rightY);    //it
+
+        if (gamepad1.right_bumper) {
+            leftY = leftY / 2;
+            rightY = rightY / 2;
+        }
+        if (gamepad1.left_bumper) {
+            leftY = leftY / 4;
+            rightY = rightY / 4;
+        }
 
         leftback_motor.setPower(leftY);         //set the power to each corresponding motor
         rightback_motor.setPower(rightY);
@@ -57,10 +70,12 @@ public class MVMSTeleOpTankMode extends MVTeleOpTelemetry {
             arm.setPower(0.0);                  //set power to 0
         }
 
-        if (gamepad1.right_bumper) {            //if the right
-            climbers.setPosition(0.5);
-        } else if (gamepad1.left_bumper) {
-            climbers.setPosition(-0.5);
+        if (gamepad1.x) {
+            climbers.setPosition(0.3);
+            return;
+        } else {
+            climbers.setPosition(1.0);
+            return;
         }
     }
 
