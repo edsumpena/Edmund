@@ -3,6 +3,8 @@ package com.qualcomm.ftcrobotcontroller.opmodes;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.hardware.ModernRoboticsI2cGyro;
+import com.qualcomm.robotcore.hardware.DcMotorController;
+
 import java.util.Timer;
 
 public class Autonomous extends LinearOpMode {
@@ -22,9 +24,28 @@ public class Autonomous extends LinearOpMode {
         arm = hardwareMap.dcMotor.get("arm");
         sensorGyro = (ModernRoboticsI2cGyro) hardwareMap.gyroSensor.get("sensorGyro");
 
+        leftbackMotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+        rightbackMotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+
         waitForStart();
 
-        tankDrive(0.3, 0.3, 4000);
+        leftbackMotor.setTargetPosition(14400);
+        rightbackMotor.setTargetPosition(14400);
+
+        leftbackMotor.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
+        rightbackMotor.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
+
+        leftfrontMotor.setPower(0.5);
+        leftbackMotor.setPower(0.5);
+        rightfrontMotor.setPower(0.5);
+        rightbackMotor.setPower(0.5);
+
+        if (leftbackMotor.getPower() < 0.1) {
+            leftfrontMotor.setPower(0.0);
+        }
+        if (rightbackMotor.getPower() < 0.1) {
+            rightfrontMotor.setPower(0.0);
+        }
     }
 
     private void turnAngle(double theta) throws InterruptedException {
@@ -120,6 +141,27 @@ public class Autonomous extends LinearOpMode {
         arm.setPower(0.0);      //stop the motors
     }
 
+    private void moveDistance(double leftY, double rightY, int distance) throws InterruptedException {
+
+        leftbackMotor.setTargetPosition(distance);
+        rightbackMotor.setTargetPosition(distance);
+
+        leftbackMotor.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
+        rightbackMotor.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
+
+        leftfrontMotor.setPower(leftY);
+        leftbackMotor.setPower(leftY);
+        rightfrontMotor.setPower(rightY);
+        rightbackMotor.setPower(rightY);
+
+        if (leftbackMotor.getPower() < 0.1) {
+            leftfrontMotor.setPower(0.0);
+        }
+        if (rightbackMotor.getPower() < 0.1) {
+            rightfrontMotor.setPower(0.0);
+        }
+    }
+
     /*private void encoderDrive(double leftY, double rightY, int encoderLength) throws InterruptedException {
         tankDrive(leftY, rightY);
 
@@ -127,31 +169,5 @@ public class Autonomous extends LinearOpMode {
         leftbackMotor.setTargetPosition(encoderLength);
         rightfrontMotor.setTargetPosition(encoderLength);
         rightbackMotor.setTargetPosition(encoderLength);
-    }/*
-
-    /*private void moveDistance(double distance) throws InterruptedException {
-
-        leftMotor.setPower(1.0);
-        rightMotor.setPower(1.0);
-        sleep(distance);
-
-
-        leftMotor.setMode(DcMotorController.RunMode .RESET_ENCODERS);
-        rightMotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
-
-        leftMotor.setTargetPosition((int)(distance*1440));
-        rightMotor.setTargetPosition((int)(distance*1440));
-
-        leftMotor.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
-       rightMotor.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
-
-        leftMotor.setPower(1.0);
-        rightMotor.setPower(1.0);
-
-        while(leftMotor.isBusy()&& rightMotor.isBusy());
-
-        leftMotor.setPower(0.0);
-        rightMotor.setPower(0.0);
-
     }*/
 }
