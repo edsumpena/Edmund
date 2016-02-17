@@ -14,7 +14,6 @@ public class Autonomous extends LinearOpMode {
     DcMotor leftbackMotor;
     DcMotor rightfrontMotor;
     DcMotor rightbackMotor;
-    DcMotor arm;
     ModernRoboticsI2cGyro sensorGyro;
     Servo climbers;
 
@@ -24,15 +23,17 @@ public class Autonomous extends LinearOpMode {
         leftbackMotor = hardwareMap.dcMotor.get("leftback_motor");       //and compare it to the motors/sensors
         rightfrontMotor = hardwareMap.dcMotor.get("rightfront_motor");  //in the code
         rightbackMotor = hardwareMap.dcMotor.get("rightback_motor");
-        arm = hardwareMap.dcMotor.get("arm");
         sensorGyro = (ModernRoboticsI2cGyro) hardwareMap.gyroSensor.get("sensorGyro");
         climbers = hardwareMap.servo.get("climbers");
 
         waitForStart();
 
-        tankDrive(0.3, 0.3, 5000);
-        tankDrive(0.5, -0.5, 350);
-        tankDrive(0.2, 0.2, 1000);
+        moveDistance(0.3, 0.3, 14400);
+        sensorGyro.calibrate();
+        while (sensorGyro.isCalibrating()) {
+        }
+        turnAngle(45);
+        moveDistance(0.2, 0.2, 5760);
         armDrive(0.3, 1000);
 
     }
@@ -42,7 +43,7 @@ public class Autonomous extends LinearOpMode {
         double e = theta;                   //identify that the error(how far we are from reaching our destination) is equal to theta
         double a = sensorGyro.getHeading(); //make double a the gyro's current heading
         telemetry.addData("Heading", a);    //print out what the current heading is
-        theta = theta + a;                  //make it so we don't have to calibrate the gyro because we
+        //theta = theta + a;                  //make it so we don't have to calibrate the gyro because we
         telemetry.addData("Theta", theta);  //are adding the current heading to how far we want to turn
         // We have desired position adjustment in theta, which is a [-179, 179]
         // the current orientation is zero after being calibrated
@@ -55,11 +56,15 @@ public class Autonomous extends LinearOpMode {
         // compare desired orientation to the current.  If the difference is positive [0, 179]
         // we will need to do right turn action
         // If the difference is negative [-180, -1], we shall do left turn action
+        double u;           //identify double u which will be the power of the motors
 
-        while(e > 1 || e < -1) {              //create a while loop which will go on until error is close to 0
+        while(e > 1 ^ e < -1) {              //create a while loop which will go on until error is close to 0
             a = sensorGyro.getHeading();      //refresh the current heading for a
             telemetry.addData("Heading", a);  //print out the current heading
 
+            if (a > 180) {
+                a = a - 360;
+            }
             e = theta - a;                    //calculate error through what angle we want to be at by subtracting
             telemetry.addData("Error", e);    //the current heading
 
@@ -70,8 +75,6 @@ public class Autonomous extends LinearOpMode {
             if (e > 180) {      //create another while loops based on the error
                 e = e - 360;    //when the error is more than 180, you minus 360 so you won't turn
             }                   //multiple times
-
-            double u;           //identify double u which will be the power of the motors
 
                                 //there are different types of turning speeds based on the errors
             if (e < -60){       //if the error is less then -60, then set the power to -0.7 to
@@ -134,6 +137,7 @@ public class Autonomous extends LinearOpMode {
 
         leftbackMotor.setTargetPosition(distance);
         rightbackMotor.setTargetPosition(distance);
+        //one rotation is 1440
 
         leftbackMotor.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
         rightbackMotor.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
@@ -143,12 +147,11 @@ public class Autonomous extends LinearOpMode {
         rightfrontMotor.setPower(rightY);
         rightbackMotor.setPower(rightY);
 
-        if (leftbackMotor.getPower() < 0.1) {
-            leftfrontMotor.setPower(0.0);
+        while(rightbackMotor.getPower() != 0 && leftbackMotor.getPower() != 0) {
+            //waiting
         }
-        if (rightbackMotor.getPower() < 0.1) {
-            rightfrontMotor.setPower(0.0);
-        }
+        rightfrontMotor.setPower(0);
+        leftfrontMotor.setPower(0);
     }
 
     /*private void encoderDrive(double leftY, double rightY, int encoderLength) throws InterruptedException {

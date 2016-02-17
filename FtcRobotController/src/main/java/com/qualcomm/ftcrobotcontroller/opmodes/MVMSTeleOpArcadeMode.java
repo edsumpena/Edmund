@@ -14,7 +14,6 @@ public class MVMSTeleOpArcadeMode extends MVTeleOpTelemetry {
     DcMotor rightback_motor;
     DcMotor leftfront_motor;
     DcMotor rightfront_motor;
-    DcMotor arm;
 
     @Override
     public void init() {
@@ -22,7 +21,6 @@ public class MVMSTeleOpArcadeMode extends MVTeleOpTelemetry {
         leftfront_motor = hardwareMap.dcMotor.get("leftfront_motor");   //identified to the
         rightback_motor = hardwareMap.dcMotor.get("rightback_motor");   //configure file on the
         rightfront_motor = hardwareMap.dcMotor.get("rightfront_motor"); //phone
-        arm = hardwareMap.dcMotor.get("arm");
     }
 
     @Override
@@ -43,14 +41,6 @@ public class MVMSTeleOpArcadeMode extends MVTeleOpTelemetry {
         leftfront_motor.setPower (left);
         rightback_motor.setPower (-right);                  //set the right power to each right motor
         rightfront_motor.setPower (-right);
-
-        float y2 = gamepad1.left_stick_y;                   //create a float called y2 based off of
-                                                            //the y axis of the left joystick
-        telemetry.addData("Y2 axis", gamepad1.left_stick_y);//print out the current y axis of the
-                                                            //left joystick
-        y2 = (float)scaleInput(y2);                         //use the scaleInput function to scale
-                                                            //the power
-        arm.setPower(y2);                                   //set the power to the motor
 
     }
     double scaleInput(double dVal)  {

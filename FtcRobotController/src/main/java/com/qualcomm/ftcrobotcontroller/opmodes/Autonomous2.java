@@ -10,7 +10,6 @@ public class Autonomous2 extends LinearOpMode {
     DcMotor leftbackMotor;
     DcMotor rightfrontMotor;
     DcMotor rightbackMotor;
-    DcMotor arm;
     ModernRoboticsI2cGyro sensorGyro;
 
     @Override
@@ -19,7 +18,6 @@ public class Autonomous2 extends LinearOpMode {
         leftbackMotor = hardwareMap.dcMotor.get("leftback_motor");       //and compare it to the motors/sensors
         rightfrontMotor = hardwareMap.dcMotor.get("rightfront_motor");  //in the code
         rightbackMotor = hardwareMap.dcMotor.get("rightback_motor");
-        arm = hardwareMap.dcMotor.get("arm");
         sensorGyro = (ModernRoboticsI2cGyro) hardwareMap.gyroSensor.get("sensorGyro");
 
         waitForStart();
@@ -110,14 +108,6 @@ public class Autonomous2 extends LinearOpMode {
 
         tankDrive(0.0, 0.0);      //stop the motors
 
-    }
-
-    private void armDrive(double armPower, long sleepAmount) throws InterruptedException {
-        arm.setPower(armPower); //set the arm power according to the double armPower
-
-        sleep(sleepAmount);     //sleep for a certain amount of milliseconds
-
-        arm.setPower(0.0);      //stop the motors
     }
 
     /*private void encoderDrive(double leftY, double rightY, int encoderLength) throws InterruptedException {

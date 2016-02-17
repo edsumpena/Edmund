@@ -14,7 +14,6 @@ public class MVMSTeleOpTankMode extends MVTeleOpTelemetry {
     DcMotor rightback_motor;
     DcMotor leftfront_motor;
     DcMotor rightfront_motor;
-    DcMotor arm;
     Servo climbers;
 
     final double open = 0.0;
@@ -26,7 +25,6 @@ public class MVMSTeleOpTankMode extends MVTeleOpTelemetry {
         leftfront_motor = hardwareMap.dcMotor.get("leftfront_motor");   //of the motors in the
         rightback_motor = hardwareMap.dcMotor.get("rightback_motor");   //configure file on the
         rightfront_motor = hardwareMap.dcMotor.get("rightfront_motor"); //phone
-        arm = hardwareMap.dcMotor.get("arm");
         climbers = hardwareMap.servo.get("climbers");
     }
 
@@ -62,16 +60,8 @@ public class MVMSTeleOpTankMode extends MVTeleOpTelemetry {
         telemetry.addData("Arm up", armUp);     //print out weather if it true or false
         telemetry.addData("Arm down", armDown);
 
-        if (armUp){                             //if armUp is true
-            arm.setPower(0.4);                  //set power to 0.4
-        } else if (armDown) {                   //if armDown is true
-            arm.setPower(-0.4);                 //set power to -0.4
-        } else {                                //or else
-            arm.setPower(0.0);                  //set power to 0
-        }
-
         if (gamepad1.x) {
-            climbers.setPosition(0.3);
+            climbers.setPosition(0.2);
             return;
         } else {
             climbers.setPosition(1.0);

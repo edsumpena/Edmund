@@ -64,6 +64,8 @@ public class FtcOpModeRegister implements OpModeRegister {
     //manager.register ("PushBotManual", PushBotManual.class);
     //manager.register ("DriveInSquare", DriveInSquare.class);
     //manager.register("MVMSTeleOpMode", MVTeleOpMode.class);
+    manager.register("MVMSTeleOpModeV2", MVMSTeleOpTankMode.class);
+    manager.register("MVMSTeleOpModeV3", MVMSTeleOpArcadeMode.class);
     manager.register("AutonomousRainbow", AutonomousRainbow.class);
     manager.register ("AutonomousMaroon", Autonomous.class);
     manager.register ("AutonomousOrange", Autonomous2.class);
@@ -74,8 +76,6 @@ public class FtcOpModeRegister implements OpModeRegister {
     manager.register ("AutonomousNavy", Autonomous7.class);
     manager.register ("AutonomousViolet", Autonomous8.class);
     manager.register ("AutonomousMagenta", Autonomous9.class);
-    manager.register("MVMSTeleOpModeV2", MVMSTeleOpTankMode.class);
-    manager.register("MVMSTeleOpModeV3", MVMSTeleOpArcadeMode.class);
     manager.register("EncoderTesting", EncoderTesting2.class);
 
     /*

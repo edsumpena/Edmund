@@ -14,8 +14,7 @@ public class Autonomous3 extends LinearOpMode {
     DcMotor leftbackMotor;
     DcMotor rightfrontMotor;
     DcMotor rightbackMotor;
-    DcMotor arm;
-    ModernRoboticsI2cGyro sensorGyro;
+    //ModernRoboticsI2cGyro sensorGyro;
     Servo climbers;
 
     @Override
@@ -24,20 +23,24 @@ public class Autonomous3 extends LinearOpMode {
         leftbackMotor = hardwareMap.dcMotor.get("leftback_motor");       //and compare it to the motors/sensors
         rightfrontMotor = hardwareMap.dcMotor.get("rightfront_motor");  //in the code
         rightbackMotor = hardwareMap.dcMotor.get("rightback_motor");
-        arm = hardwareMap.dcMotor.get("arm");
-        sensorGyro = (ModernRoboticsI2cGyro) hardwareMap.gyroSensor.get("sensorGyro");
+        //sensorGyro = (ModernRoboticsI2cGyro) hardwareMap.gyroSensor.get("sensorGyro");
         climbers = hardwareMap.servo.get("climbers");
 
         waitForStart();
 
-        tankDrive(0.3, 0.3, 5100);
-        tankDrive(0.5, -0.5, 350);
-        tankDrive(0.2, 0.2, 1000);
-        armDrive(0.3, 1000);
+        tankDrive(0.2, 0.2, 1250);
+        tankDrive(0.5, -0.5, 525);
+        tankDrive(0.2, 0.2, 4500);
+        tankDrive(0.5, -0.5, 525);
+        tankDrive(0.2, 0.2, 1750    );
+        armDrive(0.2, 1000);
+        tankDrive(-0.2, -0.2, 750);
+        tankDrive(0.5, -0.5, 1050);
+        tankDrive(0.2, 0.2, 1750);
 
     }
 
-    private void turnAngle(double theta) throws InterruptedException {
+    /*private void turnAngle(double theta) throws InterruptedException {
         //add double theta, to tell how far we want to turn
         double e = theta;                   //identify that the error(how far we are from reaching our destination) is equal to theta
         double a = sensorGyro.getHeading(); //make double a the gyro's current heading
@@ -101,7 +104,7 @@ public class Autonomous3 extends LinearOpMode {
             tankDrive(u, -u);              //send the power to the wheels
         }
         tankDrive(0.0, 0.0);               //after the while loop finishes, set the power to 0
-    }
+    }*/
 
     private void tankDrive(double leftY, double rightY) throws InterruptedException {
         rightY = -rightY;               //flip the power of the right side
