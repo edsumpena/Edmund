@@ -30,13 +30,13 @@ public class Autonomous3 extends LinearOpMode {
 
         tankDrive(0.2, 0.2, 1250);
         tankDrive(0.5, -0.5, 525);
-        tankDrive(0.2, 0.2, 4500);
+        tankDrive(0.2, 0.2, 4000);
         tankDrive(0.5, -0.5, 525);
-        tankDrive(0.2, 0.2, 1750    );
+        tankDrive(0.2, 0.2, 1650);
         armDrive(0.2, 1000);
         tankDrive(-0.2, -0.2, 750);
         tankDrive(0.5, -0.5, 1050);
-        tankDrive(0.2, 0.2, 1750);
+        tankDrive(0.2, 0.2, 1500);
 
     }
 
@@ -134,6 +134,7 @@ public class Autonomous3 extends LinearOpMode {
     }
 
     private void moveDistance(double leftY, double rightY, int distance) throws InterruptedException {
+        rightY = -rightY;
 
         leftbackMotor.setTargetPosition(distance);
         rightbackMotor.setTargetPosition(distance);
